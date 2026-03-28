@@ -246,22 +246,22 @@ export default function App() {
   return (
     <div className={`min-h-screen transition-all duration-700 font-sans ${styles.bg}`}>
       {/* BARRA DE NAVEGACIÓN */}
-      <nav className={`fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center ${styles.nav}`}>
-        <div className="flex items-center gap-3">
+      <nav className={`fixed top-0 w-full z-50 px-4 md:px-6 py-3 md:py-4 flex justify-between items-center ${styles.nav}`}>
+        <div className="flex items-center gap-2 md:gap-3">
           <div className={`${styles.badge} p-2 rounded-xl`}>
-            <FileText size={24} />
+            <FileText size={20} className="md:w-6 md:h-6" />
           </div>
           <div>
-            <h1 className="font-black text-xl tracking-tighter uppercase italic leading-none">
+            <h1 className="font-black text-lg md:text-xl tracking-tighter uppercase italic leading-none">
               Sindicato <span className={styles.accent}>Digital</span>
             </h1>
-            <p className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-40">Portal de Transparencia</p>
+            <p className="text-[8px] md:text-[10px] uppercase font-bold tracking-[0.2em] opacity-40">Portal de Transparencia</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
           <button onClick={() => setTheme(theme === 'batman' ? 'light' : 'batman')} className="hover:scale-110 transition-transform">
-            {theme === 'batman' ? <Sun className="text-yellow-500" /> : <Moon className="text-slate-600" />}
+            {theme === 'batman' ? <Sun className="text-yellow-500 w-5 h-5 md:w-6 md:h-6" /> : <Moon className="text-slate-600 w-5 h-5 md:w-6 md:h-6" />}
           </button>
 
           {user && !user.isAnonymous ? (
@@ -272,8 +272,8 @@ export default function App() {
               <button onClick={() => signOut(auth)} className="text-red-600"><LogOut size={20} /></button>
             </div>
           ) : (
-            <button onClick={() => setView('login')} className="flex items-center gap-2 group ml-4">
-              <span className="text-2xl group-hover:rotate-12 transition-transform">🐧</span>
+            <button onClick={() => setView('login')} className="flex items-center gap-2 group ml-2 md:ml-4">
+              <span className="text-xl md:text-2xl group-hover:rotate-12 transition-transform">🐧</span>
               <span className="hidden md:block text-[10px] font-black uppercase tracking-tighter opacity-50">Admin</span>
             </button>
           )}
@@ -284,8 +284,8 @@ export default function App() {
 
         {/* LOGIN */}
         {view === 'login' && (
-          <div className="max-w-md mx-auto mt-12 animate-in fade-in slide-in-from-bottom-8 duration-500">
-            <div className={`p-10 rounded-[2.5rem] border ${styles.card}`}>
+          <div className="max-w-md mx-auto mt-8 md:mt-12 animate-in fade-in slide-in-from-bottom-8 duration-500">
+            <div className={`p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border ${styles.card}`}>
               <div className="text-center mb-10">
                 <div className="inline-block p-5 bg-red-950/20 rounded-3xl text-red-600 mb-4 shadow-inner">
                   <Lock size={32} />
@@ -324,7 +324,7 @@ export default function App() {
           <div className="space-y-16 animate-in fade-in duration-700">
             {/* ANUNCIOS */}
             {announcements.length > 0 && (
-              <div className={`relative overflow-hidden p-8 rounded-[3rem] border ${theme === 'batman' ? 'bg-red-950/10 border-red-900/20' : 'bg-blue-50 border-blue-100'}`}>
+              <div className={`relative overflow-hidden p-6 md:p-8 rounded-3xl md:rounded-[3rem] border ${theme === 'batman' ? 'bg-red-950/10 border-red-900/20' : 'bg-blue-50 border-blue-100'}`}>
                 <div className="flex items-center gap-3 mb-6">
                   <Megaphone className={styles.accent} />
                   <h2 className="font-black uppercase italic tracking-widest text-sm">Comunicados Oficiales</h2>
@@ -353,9 +353,9 @@ export default function App() {
               {reports.length === 0 ? (
                 <div className="text-center py-20 opacity-20 font-black uppercase tracking-widest">Sin registros publicados</div>
               ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                   {reports.map(rep => (
-                    <div key={rep.id} className={`p-8 rounded-[2.5rem] border group transition-all hover:-translate-y-2 ${styles.card}`}>
+                    <div key={rep.id} className={`p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] border group transition-all hover:-translate-y-2 ${styles.card}`}>
                       <div className="flex justify-between items-start mb-8">
                         <div>
                           <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">Periodo de Rendición</span>
@@ -397,9 +397,9 @@ export default function App() {
         {view === 'admin' && (
           <div className="grid lg:grid-cols-3 gap-12 animate-in fade-in slide-in-from-right-8 duration-700">
             <div className="lg:col-span-2 space-y-10">
-              <div className={`p-10 rounded-[3.5rem] border ${styles.card}`}>
-                <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-8 flex items-center gap-4">
-                  <div className={`${styles.badge} p-3 rounded-2xl`}><Plus /></div>
+              <div className={`p-6 md:p-10 rounded-3xl md:rounded-[3.5rem] border ${styles.card}`}>
+                <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-6 md:mb-8 flex items-center gap-3 md:gap-4">
+                  <div className={`${styles.badge} p-2 md:p-3 rounded-xl md:rounded-2xl`}><Plus className="w-5 h-5 md:w-6 md:h-6" /></div>
                   Nueva Rendición
                 </h2>
 
@@ -434,14 +434,16 @@ export default function App() {
                       <button onClick={() => setIncomes([...incomes, { detail: '', amount: 0 }])} className="p-2 bg-green-500/10 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition-all"><Plus size={18} /></button>
                     </div>
                     {incomes.map((inc, i) => (
-                      <div key={i} className="flex gap-3 animate-in fade-in slide-in-from-left-4 items-center">
-                        <input placeholder="Motivo de ingreso" className={`flex-1 p-5 rounded-2xl border outline-none font-bold ${styles.input}`} value={inc.detail} onChange={e => { const n = [...incomes]; n[i].detail = e.target.value; setIncomes(n); }} />
-                        <input type="number" placeholder="Monto" className={`w-36 p-5 rounded-2xl border outline-none font-black ${styles.input}`} value={inc.amount} onChange={e => { const n = [...incomes]; n[i].amount = e.target.value; setIncomes(n); }} />
-                        {incomes.length > 1 && (
-                          <button onClick={() => setIncomes(incomes.filter((_, idx) => idx !== i))} className="p-3 text-red-900 hover:text-red-500 transition-colors" title="Eliminar ingreso">
-                            <Trash2 size={20} />
-                          </button>
-                        )}
+                      <div key={i} className="flex flex-col sm:flex-row gap-3 animate-in fade-in slide-in-from-left-4 items-stretch sm:items-center">
+                        <input placeholder="Motivo de ingreso" className={`w-full sm:flex-1 p-4 md:p-5 rounded-xl md:rounded-2xl border outline-none font-bold ${styles.input}`} value={inc.detail} onChange={e => { const n = [...incomes]; n[i].detail = e.target.value; setIncomes(n); }} />
+                        <div className="flex w-full sm:w-auto gap-3">
+                          <input type="number" placeholder="Monto" className={`flex-1 sm:w-36 p-4 md:p-5 rounded-xl md:rounded-2xl border outline-none font-black ${styles.input}`} value={inc.amount} onChange={e => { const n = [...incomes]; n[i].amount = e.target.value; setIncomes(n); }} />
+                          {incomes.length > 1 && (
+                            <button onClick={() => setIncomes(incomes.filter((_, idx) => idx !== i))} className="p-4 md:p-3 text-red-900 hover:text-red-500 transition-colors bg-red-950/20 sm:bg-transparent rounded-xl md:rounded-2xl flex items-center justify-center" title="Eliminar ingreso">
+                              <Trash2 size={20} />
+                            </button>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -453,14 +455,16 @@ export default function App() {
                       <button onClick={() => setExpenses([...expenses, { detail: '', amount: 0 }])} className="p-2 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"><Plus size={18} /></button>
                     </div>
                     {expenses.map((exp, i) => (
-                      <div key={i} className="flex gap-3 animate-in fade-in slide-in-from-left-4 items-center">
-                        <input placeholder="Concepto de gasto" className={`flex-1 p-5 rounded-2xl border outline-none font-bold ${styles.input}`} value={exp.detail} onChange={e => { const n = [...expenses]; n[i].detail = e.target.value; setExpenses(n); }} />
-                        <input type="number" placeholder="Monto" className={`w-36 p-5 rounded-2xl border outline-none font-black ${styles.input}`} value={exp.amount} onChange={e => { const n = [...expenses]; n[i].amount = e.target.value; setExpenses(n); }} />
-                        {expenses.length > 1 && (
-                          <button onClick={() => setExpenses(expenses.filter((_, idx) => idx !== i))} className="p-3 text-red-900 hover:text-red-500 transition-colors" title="Eliminar gasto">
-                            <Trash2 size={20} />
-                          </button>
-                        )}
+                      <div key={i} className="flex flex-col sm:flex-row gap-3 animate-in fade-in slide-in-from-left-4 items-stretch sm:items-center">
+                        <input placeholder="Concepto de gasto" className={`w-full sm:flex-1 p-4 md:p-5 rounded-xl md:rounded-2xl border outline-none font-bold ${styles.input}`} value={exp.detail} onChange={e => { const n = [...expenses]; n[i].detail = e.target.value; setExpenses(n); }} />
+                        <div className="flex w-full sm:w-auto gap-3">
+                          <input type="number" placeholder="Monto" className={`flex-1 sm:w-36 p-4 md:p-5 rounded-xl md:rounded-2xl border outline-none font-black ${styles.input}`} value={exp.amount} onChange={e => { const n = [...expenses]; n[i].amount = e.target.value; setExpenses(n); }} />
+                          {expenses.length > 1 && (
+                            <button onClick={() => setExpenses(expenses.filter((_, idx) => idx !== i))} className="p-4 md:p-3 text-red-900 hover:text-red-500 transition-colors bg-red-950/20 sm:bg-transparent rounded-xl md:rounded-2xl flex items-center justify-center" title="Eliminar gasto">
+                              <Trash2 size={20} />
+                            </button>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -475,12 +479,12 @@ export default function App() {
                   </div>
 
                   {/* RESUMEN FINAL */}
-                  <div className={`p-10 rounded-[2.5rem] border-4 border-dashed ${theme === 'batman' ? 'border-[#222]' : 'border-slate-100'} flex flex-col md:flex-row justify-between items-center gap-8`}>
-                    <div className="text-center md:text-left">
+                  <div className={`p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border-4 border-dashed ${theme === 'batman' ? 'border-[#222]' : 'border-slate-100'} flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8`}>
+                    <div className="text-center md:text-left w-full">
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">Total Disponible (Neto)</p>
-                      <p className={`text-5xl font-black italic tracking-tighter ${styles.accent}`}>${currentBalance.toLocaleString()}</p>
+                      <p className={`text-4xl md:text-5xl font-black italic tracking-tighter truncate ${styles.accent}`}>${currentBalance.toLocaleString()}</p>
                     </div>
-                    <button onClick={publishReport} className={`px-12 py-6 rounded-2xl font-black uppercase tracking-widest text-sm shadow-2xl transition-all active:scale-95 ${styles.btn}`}>
+                    <button onClick={publishReport} className={`w-full md:w-auto px-8 md:px-12 py-5 md:py-6 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-xs md:text-sm shadow-2xl transition-all active:scale-95 whitespace-nowrap ${styles.btn}`}>
                       Publicar Rendición
                     </button>
                   </div>
@@ -490,7 +494,7 @@ export default function App() {
 
             <div className="space-y-10">
               {/* GESTIÓN DE ANUNCIOS */}
-              <div className={`p-8 rounded-[2.5rem] border ${styles.card}`}>
+              <div className={`p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] border ${styles.card}`}>
                 <h3 className="font-black uppercase tracking-widest text-xs mb-6 flex items-center gap-3">
                   <Megaphone size={18} className={styles.accent} />
                   Publicar Anuncio
@@ -533,7 +537,7 @@ export default function App() {
               </div>
 
               {/* CONTROL DE HISTORIAL */}
-              <div className={`p-8 rounded-[2.5rem] border ${styles.card}`}>
+              <div className={`p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] border ${styles.card}`}>
                 <h3 className="font-black uppercase tracking-widest text-xs mb-6 flex items-center gap-3">
                   <History size={18} className={styles.accent} />
                   Gestión de Registros
