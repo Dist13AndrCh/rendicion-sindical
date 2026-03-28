@@ -84,9 +84,15 @@ export default function App() {
   // 2. Autenticación y Datos
   useEffect(() => {
     const unsubAuth = onAuthStateChanged(auth, async (u) => {
-      if (!u) await signInAnonymously(auth);
-      setUser(u);
-      setLoading(false);
+      try {
+        if (!u) await signInAnonymously(auth);
+        setUser(u || auth.currentUser);
+      } catch (err) {
+        console.error("Auth error:", err);
+        showToast("Error de conexión: " + err.message, "error");
+      } finally {
+        setLoading(false);
+      }
     });
 
     const qReports = collection(db, 'artifacts', appId, 'public', 'data', 'reports');
