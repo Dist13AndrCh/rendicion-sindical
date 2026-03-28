@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { initializeApp } from 'firebase/app';
+import { auth, db, APP_ID as appId } from './config/firebase';
 import {
-  getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
   signInAnonymously
 } from 'firebase/auth';
 import {
-  getFirestore,
   collection,
   addDoc,
   onSnapshot,
@@ -22,22 +20,6 @@ import {
   Megaphone, History, Sun, Moon, Eye, AlertCircle,
   TrendingUp, TrendingDown, Wallet, Loader2
 } from 'lucide-react';
-
-// --- CONFIGURACIÓN FIREBASE ---
-const firebaseConfig = {
-  apiKey: "AIzaSyBjNjU2q1r26x50eHcxrx3KtHJ_TN6KE6w",
-  authDomain: "rendicion-sindicato.firebaseapp.com",
-  projectId: "rendicion-sindicato",
-  storageBucket: "rendicion-sindicato.firebasestorage.app",
-  messagingSenderId: "154012070044",
-  appId: "1:154012070044:web:60902aa8c838c992f2bd59",
-  measurementId: "G-J9D203NJVT"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const appId = "rendicion-sindicato";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -62,6 +44,7 @@ export default function App() {
   // Formulario Admin
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
+  const [reportPeriod, setReportPeriod] = useState('');
   const [prevBalance, setPrevBalance] = useState(0);
   const [incomes, setIncomes] = useState([{ detail: '', amount: 0 }]);
   const [expenses, setExpenses] = useState([{ detail: '', amount: 0 }]);
@@ -141,6 +124,7 @@ export default function App() {
     if (user.isAnonymous) return;
     try {
       await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'reports'), {
+        reportPeriod,
         prevBalance: Number(prevBalance),
         incomes,
         expenses,
@@ -154,6 +138,7 @@ export default function App() {
       setIncomes([{ detail: '', amount: 0 }]);
       setExpenses([{ detail: '', amount: 0 }]);
       setPrevBalance(0);
+      setReportPeriod('');
       setExtraDetail('');
     } catch (e) {
       showToast("Error al publicar.", "error");
@@ -171,19 +156,24 @@ export default function App() {
     doc.rect(0, 0, 210, 40, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(22);
-    doc.text("SINDICATO DE TRABAJADORES", 105, 20, { align: 'center' });
+    doc.text("RENDICIÓN DE CUENTAS", 105, 20, { align: 'center' });
     doc.setFontSize(12);
-    doc.text("ESTADO FINANCIERO Y RENDICIÓN DE CUENTAS", 105, 30, { align: 'center' });
+    doc.text("ESTADO FINANCIERO - ANDRADA", 105, 30, { align: 'center' });
+
+    if (data.reportPeriod) {
+      doc.setFontSize(14);
+      doc.text(`Período de Rendición: ${data.reportPeriod}`, 105, 40, { align: 'center' });
+    }
 
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(10);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 50);
+    doc.text(`Fecha de Emisión: ${new Date().toLocaleDateString()}`, 20, 55);
     doc.setFont(undefined, 'bold');
-    doc.text(`SALDO ANTERIOR: $${data.prevBalance.toLocaleString()}`, 20, 60);
+    doc.text(`SALDO ANTERIOR: $${data.prevBalance.toLocaleString()}`, 20, 65);
 
     // Tabla de Ingresos
     doc.autoTable({
-      startY: 65,
+      startY: 75,
       head: [['Descripción de Ingresos', 'Monto']],
       body: data.incomes.map(i => [i.detail, `$${Number(i.amount).toLocaleString()}`]),
       headStyles: { fillColor: [46, 125, 50] },
@@ -192,7 +182,7 @@ export default function App() {
 
     // Subtotal de Ingresos
     let currentY = doc.lastAutoTable.finalY + 10;
-    doc.text(`SUBTOTAL (Saldo Anterior + Ingresos): $${(data.prevBalance + data.totalIncomes).toLocaleString()}`, 20, currentY);
+    doc.text(`SUBTOTAL: $${(data.prevBalance + data.totalIncomes).toLocaleString()}`, 20, currentY);
 
     // Tabla de Egresos
     doc.autoTable({
@@ -203,8 +193,12 @@ export default function App() {
       theme: 'grid'
     });
 
+    let currentYEgreso = doc.lastAutoTable.finalY + 5;
+    doc.setFont(undefined, 'bold');
+    doc.text(`TOTAL EGRESOS: $${data.totalExpenses.toLocaleString()}`, 20, currentYEgreso);
+
     // Balance Final
-    currentY = doc.lastAutoTable.finalY + 20;
+    currentY = currentYEgreso + 15;
     doc.setFillColor(240, 240, 240);
     doc.rect(15, currentY - 5, 180, 15, 'F');
     doc.setFontSize(14);
@@ -304,7 +298,7 @@ export default function App() {
                   <input
                     type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)}
                     className={`w-full p-4 rounded-2xl border outline-none font-bold ${styles.input}`}
-                    placeholder="admin@sindicato.com" required
+                    placeholder="Ingrese Correo" required
                   />
                 </div>
                 <div className="space-y-1">
@@ -365,7 +359,7 @@ export default function App() {
                       <div className="flex justify-between items-start mb-8">
                         <div>
                           <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">Periodo de Rendición</span>
-                          <h3 className="text-xl font-black">{new Date(rep.createdAt?.seconds * 1000).toLocaleDateString()}</h3>
+                          <h3 className="text-xl font-black">{rep.reportPeriod || new Date(rep.createdAt?.seconds * 1000).toLocaleDateString()}</h3>
                         </div>
                         <div className={`${styles.badge} p-3 rounded-2xl`}>
                           <Wallet size={20} />
@@ -410,6 +404,17 @@ export default function App() {
                 </h2>
 
                 <div className="space-y-10">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-4">Período de Rendición (Mes, Año)</label>
+                    <div className="relative">
+                      <input
+                        type="text" value={reportPeriod} onChange={e => setReportPeriod(e.target.value)}
+                        className={`w-full px-8 py-5 rounded-[2rem] border outline-none font-bold placeholder-opacity-50 ${styles.input}`}
+                        placeholder="Ej: Enero 2026"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-4">Saldo Inicial (Mes Anterior)</label>
                     <div className="relative">
@@ -586,7 +591,7 @@ export default function App() {
       )}
 
       <footer className="py-12 text-center opacity-20 text-[8px] font-black uppercase tracking-[0.8em]">
-        Wayne Financial Systems &copy; {new Date().getFullYear()} - Rendición Vengeance
+        Sistema Financiero Sindical &copy; {new Date().getFullYear()} - Rendición de Cuentas
       </footer>
 
       <style dangerouslySetInnerHTML={{

@@ -1,16 +1,21 @@
-# React + Vite
+# Sistema Financiero Sindical – The Batman Theme
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este repositorio almacena y unifica toda la lógica del **Portal de Rendición de Cuentas Sindicales y Estado Financiero Seguro**. La visualización se apoya en una capa moderna y responsiva de TailwindCSS con un impactante "Modo Batman" por defecto.
 
-Currently, two official plugins are available:
+## Funciones Principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Gestión Avanzada del Administrador**: Detrás de un inicio de sesión de dos pasos con Firebase Auth, garantizando la seguridad absoluta y el registro inmutable en Firestore Database.
+- **Rendiciones Mensuales**: Integración instantánea y cálculo automático del saldo inicial, un resumen de ingresos/egresos y un saldo total final listos para procesar los balances mensuales y trimestrales.
+- **Generación de PDF**: Gracias a la librería de `jsPDF` y de autotablas construimos recibos limpios, profesionales y transparentes (incluyendo detalles de cada gasto/ingreso en sub-renglones tabulares) que pueden ser resguardados y publicados por la dirigencia del sindicato.
+- **Notificaciones Oficiales**: Área central para comunicados en tiempo directo a los afiliados.
 
-## React Compiler
+## Despliegue Configurado (Guía de Github Pages)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Si necesitas actualizar la aplicación y subir cambios al portal:
+Abre la consola de comandos de tu IDE y asegúrate de ejecutar el comando de construcción estresando nuestro pre-compilador Vite.
 
-## Expanding the ESLint configuration
+```bash
+npm run deploy
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+La lógica cargará una emulación, creará la versión para producción minificada y la subirá permanentemente al `gh-pages` branch asegurando la visibilidad del repositorio en `https://[TuUsuario].github.io/rendicion-sindical/`.
