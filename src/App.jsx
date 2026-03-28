@@ -175,40 +175,40 @@ export default function App() {
     doc.setFontSize(10);
     doc.text(`Fecha de Emisión: ${new Date().toLocaleDateString()}`, 20, 55);
     doc.setFont(undefined, 'bold');
-    doc.text(`SALDO ANTERIOR: $${data.prevBalance.toLocaleString()}`, 20, 65);
+    doc.text(`SALDO ANTERIOR: Bs. ${data.prevBalance.toLocaleString()}`, 20, 65);
 
     // Tabla de Ingresos
     doc.autoTable({
       startY: 75,
       head: [['Descripción de Ingresos', 'Monto']],
-      body: data.incomes.map(i => [i.detail, `$${Number(i.amount).toLocaleString()}`]),
+      body: data.incomes.map(i => [i.detail, `Bs. ${Number(i.amount).toLocaleString()}`]),
       headStyles: { fillColor: [46, 125, 50] },
       theme: 'grid'
     });
 
     // Subtotal de Ingresos
     let currentY = doc.lastAutoTable.finalY + 10;
-    doc.text(`SUBTOTAL: $${(data.prevBalance + data.totalIncomes).toLocaleString()}`, 20, currentY);
+    doc.text(`SUBTOTAL: Bs. ${(data.prevBalance + data.totalIncomes).toLocaleString()}`, 20, currentY);
 
     // Tabla de Egresos
     doc.autoTable({
       startY: currentY + 5,
       head: [['Descripción de Egresos', 'Monto']],
-      body: data.expenses.map(e => [e.detail, `$${Number(e.amount).toLocaleString()}`]),
+      body: data.expenses.map(e => [e.detail, `Bs. ${Number(e.amount).toLocaleString()}`]),
       headStyles: { fillColor: [183, 28, 28] },
       theme: 'grid'
     });
 
     let currentYEgreso = doc.lastAutoTable.finalY + 5;
     doc.setFont(undefined, 'bold');
-    doc.text(`TOTAL EGRESOS: $${data.totalExpenses.toLocaleString()}`, 20, currentYEgreso);
+    doc.text(`TOTAL EGRESOS: Bs. ${data.totalExpenses.toLocaleString()}`, 20, currentYEgreso);
 
     // Balance Final
     currentY = currentYEgreso + 15;
     doc.setFillColor(240, 240, 240);
     doc.rect(15, currentY - 5, 180, 15, 'F');
     doc.setFontSize(14);
-    doc.text(`SALDO ACTUAL EN CAJA: $${data.currentBalance.toLocaleString()}`, 105, currentY + 5, { align: 'center' });
+    doc.text(`SALDO ACTUAL EN CAJA: Bs. ${data.currentBalance.toLocaleString()}`, 105, currentY + 5, { align: 'center' });
 
     if (data.extraDetail) {
       doc.setFontSize(10);
@@ -377,7 +377,7 @@ export default function App() {
                           <span>Saldo en Caja</span>
                           <TrendingUp size={16} className="text-green-500" />
                         </div>
-                        <p className="text-4xl font-black italic tracking-tighter">${rep.currentBalance?.toLocaleString()}</p>
+                        <p className="text-4xl font-black italic tracking-tighter">Bs. {rep.currentBalance?.toLocaleString()}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
@@ -424,10 +424,10 @@ export default function App() {
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-4">Saldo Inicial (Mes Anterior)</label>
                     <div className="relative">
-                      <span className="absolute left-8 top-1/2 -translate-y-1/2 font-black text-3xl opacity-10">$</span>
+                      <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-2xl opacity-20 mt-1">Bs.</span>
                       <input
                         type="number" value={prevBalance} onChange={e => setPrevBalance(e.target.value)}
-                        className={`w-full pl-16 pr-8 py-7 rounded-[2rem] border outline-none text-3xl font-black ${styles.input}`}
+                        className={`w-full pl-20 pr-8 py-7 rounded-[2rem] border outline-none text-3xl font-black ${styles.input}`}
                         placeholder="0.00"
                       />
                     </div>
@@ -488,7 +488,7 @@ export default function App() {
                   <div className={`p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border-4 border-dashed ${theme === 'batman' ? 'border-[#222]' : 'border-slate-100'} flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8`}>
                     <div className="text-center md:text-left w-full">
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">Total Disponible (Neto)</p>
-                      <p className={`text-4xl md:text-5xl font-black italic tracking-tighter truncate ${styles.accent}`}>${currentBalance.toLocaleString()}</p>
+                      <p className={`text-4xl md:text-5xl font-black italic tracking-tighter truncate ${styles.accent}`}>Bs. {currentBalance.toLocaleString()}</p>
                     </div>
                     <button onClick={publishReport} className={`w-full md:w-auto px-8 md:px-12 py-5 md:py-6 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-xs md:text-sm shadow-2xl transition-all active:scale-95 whitespace-nowrap ${styles.btn}`}>
                       Publicar Rendición
@@ -553,7 +553,7 @@ export default function App() {
                     <div key={r.id} className={`flex items-center justify-between p-4 rounded-2xl border ${theme === 'batman' ? 'bg-zinc-900/50 border-zinc-800' : 'bg-slate-50 border-slate-100'}`}>
                       <div>
                         <p className="text-[10px] font-black opacity-40 uppercase">{new Date(r.createdAt?.seconds * 1000).toLocaleDateString()}</p>
-                        <p className="text-lg font-black text-red-600 tracking-tighter">${r.currentBalance?.toLocaleString()}</p>
+                        <p className="text-lg font-black text-red-600 tracking-tighter">Bs. {r.currentBalance?.toLocaleString()}</p>
                       </div>
                       <div className="flex gap-2">
                         <button onClick={() => generatePDF(r)} className="p-2 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700 transition-all"><Eye size={16} /></button>
